@@ -15,7 +15,6 @@ class ReservationAdmin(admin.ModelAdmin):
     search_fields = ('passenger_name', 'passenger_email', 'reservation_code')
     list_filter = ('status', 'flight')
 
-# Modelleri admin paneline kaydet
 admin.site.register(Airplane, AirplaneAdmin)
 admin.site.register(Flight, FlightAdmin)
 admin.site.register(Reservation, ReservationAdmin)

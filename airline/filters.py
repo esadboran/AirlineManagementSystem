@@ -1,7 +1,7 @@
 import django_filters
 from .models import Airplane, Flight, Reservation
 
-
+# Filter class for the Airplane model
 class AirplaneFilter(django_filters.FilterSet):
     tail_number = django_filters.CharFilter(lookup_expr='icontains')
     model = django_filters.CharFilter(lookup_expr='icontains')
@@ -17,7 +17,7 @@ class AirplaneFilter(django_filters.FilterSet):
         model = Airplane
         fields = ['tail_number', 'model', 'status', 'production_year', 'capacity']
 
-
+# Filter class for the Flight model
 class FlightFilter(django_filters.FilterSet):
     flight_number = django_filters.CharFilter(field_name="flight_number", lookup_expr='icontains')
     departure = django_filters.CharFilter(lookup_expr='icontains')
@@ -35,7 +35,7 @@ class FlightFilter(django_filters.FilterSet):
         model = Flight
         fields = ['flight_number', 'departure', 'destination', 'departure_time', 'arrival_time', 'airplane']
 
-
+# Filter class for the Reservation model
 class ReservationFilter(django_filters.FilterSet):
     passenger_name = django_filters.CharFilter(lookup_expr='icontains')
     passenger_email = django_filters.CharFilter(lookup_expr='icontains')

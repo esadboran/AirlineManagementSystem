@@ -11,7 +11,6 @@ class AirplaneSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def validate_tail_number(self, value):
-        """Uçak kuyruğu numarası zorunlu ve eşsiz olmalıdır."""
         if not value:
             raise serializers.ValidationError("Tail number zorunludur.")
         if not value.isalnum():
@@ -19,13 +18,11 @@ class AirplaneSerializer(serializers.ModelSerializer):
         return value
 
     def validate_model(self, value):
-        """Model adı en az 3 karakter olmalıdır."""
         if len(value) < 3:
             raise serializers.ValidationError("Model adı en az 3 karakter olmalıdır.")
         return value
 
     def validate_capacity(self, value):
-        """Kapasite pozitif bir sayı olmalıdır."""
         if value < 1:
             raise serializers.ValidationError("Kapasite en az 1 olmalıdır.")
         return value
@@ -44,19 +41,16 @@ class FlightSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def validate_flight_number(self, value):
-        """Uçuş numarası zorunlu ve eşsiz olmalıdır."""
         if not value:
             raise serializers.ValidationError("Uçuş numarası zorunludur.")
         return value
 
     def validate_departure(self, value):
-        """Kalkış noktası en az 3 karakter olmalıdır."""
         if len(value) < 3:
             raise serializers.ValidationError("Kalkış noktası en az 3 karakter olmalıdır.")
         return value
 
     def validate_destination(self, value):
-        """Varış noktası en az 3 karakter olmalıdır ve kalkış ile aynı olamaz."""
         if len(value) < 3:
             raise serializers.ValidationError("Varış noktası en az 3 karakter olmalıdır.")
         if value == self.initial_data.get('departure'):
@@ -64,13 +58,11 @@ class FlightSerializer(serializers.ModelSerializer):
         return value
 
     def validate_departure_time(self, value):
-        """Kalkış zamanı bugünden sonraki bir tarih olmalıdır."""
         if value <= datetime.datetime.now():
             raise serializers.ValidationError("Kalkış zamanı bugünden sonra olmalıdır.")
         return value
 
     def validate(self, data):
-        """Genel doğrulama: Varış zamanı kalkıştan sonra olmalı."""
         departure_time = data.get('departure_time')
         arrival_time = data.get('arrival_time')
 
@@ -88,33 +80,26 @@ class ReservationSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def validate_passenger_name(self, value):
-        """Yolcu adı en az 3 karakter olmalıdır."""
         if len(value) < 3:
             raise serializers.ValidationError("Yolcu adı en az 3 karakter olmalıdır.")
         return value
 
     def validate_passenger_email(self, value):
-        """E-posta geçerli olmalıdır."""
         if "@" not in value or "." not in value:
             raise serializers.ValidationError("Geçerli bir e-posta adresi giriniz.")
         return value
 
     def validate_flight(self, flight):
-        """Uçuş kapasitesi doluysa rezervasyon yapılamaz."""
         if flight.reservations.count() >= flight.airplane.capacity:
             raise serializers.ValidationError("Bu uçuşun kapasitesi dolu!")
         return flight
 
     def validate_status(self, value):
-        """Rezervasyon durumu sadece True veya False olabilir."""
         if not isinstance(value, bool):
             raise serializers.ValidationError("Rezervasyon durumu True veya False olmalıdır.")
         return value
 
-
-
     def create(self, validated_data):
         validated_data['reservation_code'] = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
-
         reservation = super().create(validated_data)
         return reservation
