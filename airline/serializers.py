@@ -3,7 +3,8 @@ import string
 import uuid
 from rest_framework import serializers
 from .models import Airplane, Flight, Reservation
-import datetime
+from datetime import datetime, timezone
+
 
 class AirplaneSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,7 +30,7 @@ class AirplaneSerializer(serializers.ModelSerializer):
 
     def validate_production_year(self, value):
         """Üretim yılı 1900  ile bugünkü yıl arasında olmalıdır."""
-        current_year = datetime.datetime.now().year
+        current_year = datetime.now().year
         if value < 1903 or value > current_year:
             raise serializers.ValidationError(f"Üretim yılı 1900 ile {current_year} arasında olmalıdır.")
         return value
@@ -58,7 +59,7 @@ class FlightSerializer(serializers.ModelSerializer):
         return value
 
     def validate_departure_time(self, value):
-        if value <= datetime.datetime.now():
+        if value <= datetime.now(timezone.utc):
             raise serializers.ValidationError("Kalkış zamanı bugünden sonra olmalıdır.")
         return value
 
