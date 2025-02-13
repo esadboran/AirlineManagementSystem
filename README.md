@@ -208,7 +208,7 @@ These filtering options enable precise data retrieval and improve API usability!
 ## 🛠 API Testing with Postman  
 You can test this API using **Postman** by importing the collection with the following link:  
 
-[📂 Airline Management System Postman Collection](https://raw.githubusercontent.com/esadboran/AirlineManagementSystem/main/AirlineManagementSystem.postman_collection.json)
+[📂 Airline Management System Postman Collection](https://github.com/esadboran/AirlineManagementSystem/blob/main/AirlineManagementSystem.postman_collection.json)
 
 ---
 Esad Boran
